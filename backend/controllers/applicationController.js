@@ -1,4 +1,4 @@
-import { catchAsyncError } from "../middlewares/catchAsyncErrors";
+import { catchAsyncError } from "../middlewares/catchAsyncErrors.js";
 import { Application } from "../models/applicationSchema.js";
 import cloudinary from "cloudinary";
 import { Job } from "../models/jobSchema.js";

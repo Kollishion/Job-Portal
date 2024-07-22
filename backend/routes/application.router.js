@@ -4,8 +4,7 @@ import {
   jobSeekerDeleteApplication,
   jobSeekerGetAllApplications,
   postApplication,
-} from "../controllers/applicationController";
-("../controllers/applicationController.js");
+} from "../controllers/applicationController.js";
 import { isAuthorized } from "../middlewares/auth.js";
 
 const router = express.Router();
