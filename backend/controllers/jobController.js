@@ -20,6 +20,7 @@ export const postJob = catchAsyncError(async (req, res, next) => {
       )
     );
   }
+
   const {
     title,
     description,
@@ -35,7 +36,9 @@ export const postJob = catchAsyncError(async (req, res, next) => {
   if (!title || !description || !category || !country || !city || !location) {
     return next(new ErrorHandler("Please provide full job details", 400));
   }
-  if ((!salaryFrom || salaryTo) && !fixedSalary) {
+
+  // Check if neither salary range nor fixed salary is provided
+  if (!salaryFrom && !salaryTo && !fixedSalary) {
     return next(
       new ErrorHandler(
         "Please either provide fixed salary or ranged salary",
@@ -43,10 +46,14 @@ export const postJob = catchAsyncError(async (req, res, next) => {
       )
     );
   }
-  if (salaryFrom && salaryTo && fixedSalary) {
-    new ErrorHandler(
-      "Cannot enter fixed salary and ranged salary together!",
-      400
+
+  // Check if both fixed salary and ranged salary are provided
+  if (fixedSalary && (salaryFrom || salaryTo)) {
+    return next(
+      new ErrorHandler(
+        "Cannot enter fixed salary and ranged salary together!",
+        400
+      )
     );
   }
 
@@ -81,6 +88,7 @@ export const getMyJobs = catchAsyncError(async (req, res, next) => {
       )
     );
   }
+
   const myJobs = await Job.find({ postedBy: req.user._id });
   res.status(200).json({
     success: true,
@@ -133,6 +141,6 @@ export const deleteJob = catchAsyncError(async (req, res, next) => {
   await job.deleteOne();
   res.status(200).json({
     success: true,
-    message: "Job Deleted Successfully!"
+    message: "Job Deleted Successfully!",
   });
 });

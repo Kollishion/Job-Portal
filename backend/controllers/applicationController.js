@@ -2,6 +2,7 @@ import { catchAsyncError } from "../middlewares/catchAsyncErrors.js";
 import { Application } from "../models/applicationSchema.js";
 import cloudinary from "cloudinary";
 import { Job } from "../models/jobSchema.js";
+import ErrorHandler from "../middlewares/error.js";
 
 export const employerGetAllApplications = catchAsyncError(
   async (req, res, next) => {
@@ -29,7 +30,7 @@ export const jobSeekerGetAllApplications = catchAsyncError(
     if (role === "Employer") {
       return next(
         new ErrorHandler(
-          "Job Seeker is not allowed to access these resources!",
+          "Employer is not allowed to access these resources!",
           400
         )
       );
@@ -146,7 +147,7 @@ export const postApplication = catchAsyncError(async (req, res, next) => {
   });
   res.status(200).json({
     success: true,
-    message: "applcation submitted",
+    message: "application submitted",
     application,
   });
 });
